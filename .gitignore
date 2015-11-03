@@ -6,11 +6,3 @@ install.sh
 Makefile.am
 MakeOLD
 update.sh
-scripts/
-src/
-aclocal.m4
-configure.ac
-install.sh
-Makefile.am
-MakeOLD
-update.sh
