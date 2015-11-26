@@ -201,7 +201,7 @@ function stashRepo {
 	info "Cloning git-folder-tree and updating all repo's..."
 
 	changedir ..
-	dosomething "git clone https://github.com/GymWenFLL/tpp_gftree" "'Failed to pull the git-folder-tree, exiting...'" "-e tpp_gftree"
+	dosomething "git clone https://github.com/GymWenFLL/tpp_gftree" "'Failed to pull the git-folder-tree, exiting...'" "! -e tpp_gftree"
 	changedir tpp_gftree
 
 	cdmvgitpull tpp_android_fetch_src
