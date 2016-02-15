@@ -192,8 +192,8 @@ function firstFetch {
 	exit 0
 }
 
-function stashRepo {
-	info "This Script will stash any changes you may have made."
+function updateRepo {
+	info "This Script will update any changes you may have made."
 	info "If you want to continue, you have to wait 5 seconds."
 
 	timeout 5 ping localhost >/dev/null
@@ -214,20 +214,6 @@ function stashRepo {
 	cdmvgitpull tpp_scripts_to_install
 	cdmvgitpull tpp_software_src_insert
 
-	info "Wiping everything of the working-directory..."
-	changedir ../tpp_repo
-	remove scripts/
-	remove src/
-	remove aclocal.m4
-	remove configure.ac
-	remove install.sh
-	remove LICENSE
-	remove Makefile.am
-	remove MakeOLD
-	remove README
-	remove update.sh
-
-	changedir ..
 	info "Looking for folders to fill... if not present create them."
 	lookforfolder tpp_repo
 	lookforfolder tpp_repo/src/lib/
@@ -261,6 +247,17 @@ function stashRepo {
 
 	info "Finished!"
 	exit 0
+}
+
+function stashRepo {
+	echo Wiping every change you may have made and refetch the codebase.
+    echo Wiping everything...
+    yes | rm -r scripts/
+    yes | rm -r src/
+    yes | rm auto*
+    yes | rm configure
+    yes | rm Makefile
+    firstFetch
 }
 
 function pushRepo {
@@ -355,4 +352,3 @@ fi
 
 error "Wrong (spelled) or unimplemented command... maybe try with help?"
 help
-
