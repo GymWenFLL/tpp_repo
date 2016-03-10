@@ -28,7 +28,7 @@ function dosomething {
 
 function help {
 	echo ,--------------------------------------,
-	echo "|-------------REPO TOOL v1-------------|"
+	echo "|-----------REPO TOOL v1.0a------------|"
 	echo "|-----------------HELP-----------------|"
 	echo "'--------------------------------------'"
 	echo
@@ -106,7 +106,8 @@ function cdmvgitpull {
 function cdgitpush {
 	changedir $1
 	dosomething "git add ." "Failed to git add!" "! -e README.md"
-	dosomething "git commit -m '"add / modify some files"' " "Failed to git commit!" "! -e README.md"
+    read -p "What have you done since the last commit? (This will be the commit message) " cmsg
+	dosomething "git commit -m '"$cmsg"' " "Failed to git commit!" "! -e README.md"
 	gitpush
 	changedir ..
 }
@@ -122,63 +123,24 @@ function firstFetch {
 	folderlook src/software/
 
 	info "Fetching Source-Code and install it..."
-	git clone https://github.com/GymWenFLL/tpp_android_fetch_src
-	git clone https://github.com/GymWenFLL/tpp_lib_src_insert
-	git clone https://github.com/GymWenFLL/tpp_software_src_insert
-	git clone https://github.com/GymWenFLL/tpp_fw_src_insert
-	git clone https://github.com/GymWenFLL/tpp_helper_scripts_for_repo
-	git clone https://github.com/GymWenFLL/tpp_automake_autoconf_files
-	git clone https://github.com/GymWenFLL/tpp_scripts_to_install
-	git clone https://github.com/GymWenFLL/tpp_lib_slip_src_insert
+	git clone https://github.com/GymWenFLL/tpp_android_fetch
+	git clone https://github.com/GymWenFLL/tpp_lib_src
+	git clone https://github.com/GymWenFLL/tpp_software_src
+	git clone https://github.com/GymWenFLL/tpp_fw_src
+	git clone https://github.com/GymWenFLL/tpp_autotool
+	git clone https://github.com/GymWenFLL/tpp_installedscripts
+	git clone https://github.com/GymWenFLL/tpp_lib_slip_src
+    #git clone https://github.com/GymWenFLL/tpp_lib_stdlib
 
-	mv tpp_scripts_to_install/* scripts/
-	mv tpp_scripts_to_install/.git/ scripts/
-	mv tpp_helper_scripts_for_repo/* ./
-	mv tpp_fw_src_insert/* src/fw/prog/
-	mv tpp_fw_src_insert/.git src/fw/prog/
-	mv tpp_android_fetch_src/* src/fw/
-	mv tpp_android_fetch_src/.git src/fw/
-	mv tpp_lib_src_insert/* src/lib/
-	mv tpp_lib_src_insert/.git src/lib/
-	mv tpp_lib_slip_src_insert/* src/lib/slip/
-	mv tpp_lib_slip_src_insert/.git src/lib/slip/
-	mv tpp_software_src_insert/* src/software/
-	mv tpp_software_src_insert/.git src/software/
-	mv tpp_automake_autoconf_files/Makefile_scripts.am scripts/Makefile.am
-	mv tpp_automake_autoconf_files/Makefile_src.am src/Makefile.am
-	mv tpp_automake_autoconf_files/Makefile_src_fw.am src/fw/Makefile.am
-	mv tpp_automake_autoconf_files/Makefile_src_lib src/lib/Makefile
-	mv tpp_automake_autoconf_files/Makefile_src_lib_slip src/lib/slip/Makefile
-	rm tpp_automake_autoconf_files/README.md
-	mv tpp_automake_autoconf_files/* ./
-	mv Makefile_top.am Makefile.am
-
-	info "Install gitignores..."
-	if [ -e src/fw/.gitignore ]; then
-		info "Found src/fw/.gitignore"
-	else
-		echo prog/ >> src/fw/.gitignore
-		echo "prog/ >> src/fw/.gitignore"
-	fi
-
-	echo scripts/ >> .gitignore
-	echo src/ >> .gitignore
-	echo aclocal.m4 >> .gitignore
-	echo configure.ac >> .gitignore
-	echo install.sh >> .gitignore
-	echo Makefile.am >> .gitignore
-	echo MakeOLD >> .gitignore
-	echo update.sh >> .gitignore
-	echo 'scripts/ >> .gitignore
-		src/ >> .gitignore
-		aclocal.m4 >> .gitignore
-		configure.ac >> .gitignore
-		install.sh >> .gitignore
-		Makefile.am >> .gitignore
-		MakeOLD >> .gitignore
-		update.sh >> .gitignore'
-	echo slip/ >> src/lib/.gitignore
-
+	mv tpp_installedscripts/conn.sh scripts/
+	mv tpp_installedscripts/Makefile scripts/
+	mv tpp_fw_src/* src/fw/prog/
+	mv tpp_android_fetch/* src/fw/
+	mv tpp_lib_src/* src/lib/
+	mv tpp_lib_slip_src/* src/lib/slip/
+	mv tpp_software_src/* src/software/
+	mv tpp_automake_autoconf_files/aclocal.m4 ./aclocal.m4
+    
 	info "Work finished! cleaning up..."
 	yes | rm -r tpp_android_fetch_src
 	yes | rm -r tpp_automake_autoconf_files
@@ -204,15 +166,14 @@ function updateRepo {
 	dosomething "git clone https://github.com/GymWenFLL/tpp_gftree" "'Failed to pull the git-folder-tree, exiting...'" "! -e tpp_gftree"
 	changedir tpp_gftree
 
-	cdmvgitpull tpp_android_fetch_src
-	cdmvgitpull tpp_automake_autoconf_files
-	cdmvgitpull tpp_fw_src_insert
-	cdmvgitpull tpp_helper_scripts_for_repo
-	cdmvgitpull tpp_lib_slip_src_insert
-	cdmvgitpull tpp_lib_src_insert
+	cdmvgitpull tpp_android_fetch
+	cdmvgitpull tpp_autotool
+	cdmvgitpull tpp_fw_src
+	cdmvgitpull tpp_lib_slip_src
+	cdmvgitpull tpp_lib_src
 	cdmvgitpull tpp_repo
-	cdmvgitpull tpp_scripts_to_install
-	cdmvgitpull tpp_software_src_insert
+	cdmvgitpull tpp_installedscripts
+	cdmvgitpull tpp_software_src
 
 	info "Looking for folders to fill... if not present create them."
 	lookforfolder tpp_repo
@@ -224,23 +185,12 @@ function updateRepo {
 	lookforfolder tpp_repo/src/fw/
 
 	info "Paste the repo files into the working-directory..."
-	movemf tpp_gftree/tpp_android_fetch_src/* tpp_repo/src/fw/
-	movemf tpp_gftree/tpp_automake_autoconf_files/* tpp_repo/
-	movemf tpp_gftree/tpp_fw_src_insert/* tpp_repo/src/fw/
-	movemf tpp_gftree/tpp_helper_scripts_for_repo/ tpp_repo/repoSh_experimental
-	movemf tpp_gftree/tpp_lib_slip_src_insert/* tpp_repo/lib/slip/
-	movemf tpp_gftree/tpp_lib_src_insert/* tpp_repo/src/lib/
-	movemf tpp_gftree/tpp_scripts_to_install/* tpp_repo/scripts/
-	movemf tpp_gftree/tpp_software_src_insert/* tpp_repo/src/software/
-
-	changedir tpp_repo
-	move Makefile_scripts.am scripts/Makefile.am
-	move Makefile_src.am src/Makefile.am
-	move Makefile_src_fw.am src/fw/Makefile.am
-	move Makefile_src_lib src/lib/Makefile
-	move Makefile_src_lib_slip src/lib/slip/Makefile
-
-	changedir ..
+	movemf tpp_gftree/tpp_android_fetch/* tpp_repo/src/fw/
+	movemf tpp_gftree/tpp_fw_src/* tpp_repo/src/fw/
+	movemf tpp_gftree/tpp_lib_slip_src/* tpp_repo/lib/slip/
+	movemf tpp_gftree/tpp_lib_src/* tpp_repo/src/lib/
+	movemf tpp_gftree/tpp_installedscripts/* tpp_repo/scripts/
+	movemf tpp_gftree/tpp_software_src/* tpp_repo/src/software/
 
 	info "Cleaning Up..."
 	remove tpp_gftree
@@ -254,7 +204,7 @@ function stashRepo {
     echo Wiping everything...
     yes | rm -r scripts/
     yes | rm -r src/
-    yes | rm auto*
+    yes | rm aclocal.m4
     yes | rm configure
     yes | rm Makefile
     firstFetch
@@ -269,47 +219,33 @@ function pushRepo {
 	changedir tpp_gftree
 	
 	info "making it usable..."
-	cdmvgitpull tpp_android_fetch_src
-	cdmvgitpull tpp_automake_autoconf_files
-	cdmvgitpull tpp_fw_src_insert
-	cdmvgitpull tpp_helper_scripts_for_repo
-	cdmvgitpull tpp_lib_slip_src_insert
-	cdmvgitpull tpp_lib_src_insert
+	cdmvgitpull tpp_android_fetch
+	cdmvgitpull tpp_autotool
+	cdmvgitpull tpp_fw_src
+	cdmvgitpull tpp_lib_slip_src
+	cdmvgitpull tpp_lib_src
 	cdmvgitpull tpp_repo
-	cdmvgitpull tpp_scripts_to_install
-	cdmvgitpull tpp_software_src_insert
+	cdmvgitpull tpp_installedscripts
+	cdmvgitpull tpp_software_src
 	
 	changedir ..
 	
 	info "copying files to the repositories..."
 	
-	info "tpp_android_fetch_src"
-	move tpp_repo/src/fw/scripts tpp_gftree/tpp_android_fetch_src/
+	info "tpp_android_fetch"
+	move tpp_repo/src/fw/scripts tpp_gftree/tpp_android_fetch/
 	
-	info "tpp_automake_autoconf_files"
-	move tpp_repo/Makefile.am tpp_gftree/tpp_automake_autoconf_files/
-	move tpp_repo/aclocal.m4 tpp_gftree/tpp_automake_autoconf_files/
-	move tpp_repo/scripts/Makefile.am tpp_gftree/tpp_automake_autoconf_files/Makefile_scripts.am
-	move tpp_repo/src/Makefile.am tpp_gftree/tpp_automake_autoconf_files/Makefile_src.am
-	move tpp_repo/src/fw/Makefile.am tpp_gftree/tpp_automake_autoconf_files/Makefile_src_fw.am
-	move tpp_repo/src/lib/Makefile tpp_gftree/tpp_automake_autoconf_files/Makefile_src_lib
-	move tpp_repo/src/lib/slip/Makefile tpp_gftree/tpp_automake_autoconf_files/Makefile_src_lib_slip
-	move tpp_repo/configure.ac tpp_gftree/tpp_automake_autoconf_files/
+	info "tpp_fw_src"
+	move tpp_repo/src/fw/code/ tpp_gftree/tpp_fw_src/
+	move tpp_repo/src/fw/conn.sh tpp_gftree/tpp_fw_src/
 	
-	info "tpp_fw_src_insert"
-	move tpp_repo/src/fw/code/ tpp_gftree/tpp_fw_src_insert/
-	move tpp_repo/src/fw/conn.sh tpp_gftree/tpp_fw_src_insert/
+	info "tpp_lib_slip_src"
+	movemf tpp_repo/lib/slip/* tpp_gftree/tpp_lib_slip_src/
 	
-	info "tpp_helper_scripts_for_repo"
-	movemf tpp_repo/repoSh_experimental/* tpp_gftree/tpp_helper_scripts_for_repo/
+	info "tpp_lib_src"
+	move tpp_repo/src/lib/stdlib/ tpp_gftree/tpp_lib_src/
 	
-	info "tpp_lib_slip_src_insert"
-	movemf tpp_repo/lib/slip/* tpp_gftree/tpp_lib_slip_src_insert/
-	
-	info "tpp_lib_src_insert"
-	move tpp_repo/src/lib/stdlib/ tpp_gftree/tpp_lib_src_insert/
-	
-	info "tpp_scripts_to_install"
+	info "tpp_installedscripts"
 	movemf tpp_repo/scripts/* tpp_gftree/tpp_scripts_to_install/
 	
 	info "tpp_software_src_insert"
@@ -318,15 +254,14 @@ function pushRepo {
 	changedir tpp_gftree
 	
 	info "pushing code to master..."
-	cdgitpush tpp_android_fetch_src
-	cdgitpush tpp_automake_autoconf_files
-	cdgitpush tpp_fw_src_insert
-	cdgitpush tpp_helper_scripts_for_repo
-	cdgitpush tpp_lib_slip_src_insert
-	cdgitpush tpp_lib_src_insert
+	cdgitpush tpp_android_fetch
+	cdgitpush tpp_autotool
+	cdgitpush tpp_fw_src
+	cdgitpush tpp_lib_slip_src
+	cdgitpush tpp_lib_src
 	cdgitpush tpp_repo
-	cdgitpush tpp_scripts_to_install
-	cdgitpush tpp_software_src_insert
+	cdgitpush tpp_installedscripts
+	cdgitpush tpp_software_src
 }
 
 if [ ! $1 ]; then
