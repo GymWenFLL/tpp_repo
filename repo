@@ -139,17 +139,19 @@ function firstFetch {
 	mv tpp_lib_src/* src/lib/
 	mv tpp_lib_slip_src/* src/lib/slip/
 	mv tpp_software_src/* src/software/
-	mv tpp_automake_autoconf_files/aclocal.m4 ./aclocal.m4
+	mv tpp_autotool/aclocal.m4 ./aclocal.m4
+    mv tpp_autotool/Makefile_scripts scripts/Makefile
+    mkdir makefiles
+    mv tpp_autotool/Makefile_* makefiles/
     
 	info "Work finished! cleaning up..."
-	yes | rm -r tpp_android_fetch_src
-	yes | rm -r tpp_automake_autoconf_files
-	yes | rm -r tpp_fw_src_insert
-	yes | rm -r tpp_helper_scripts_for_repo
-	yes | rm -r tpp_lib_slip_src_insert
-	yes | rm -r tpp_lib_src_insert
-	yes | rm -r tpp_software_src_insert
-	yes | rm -r tpp_scripts_to_install
+	yes | rm -r tpp_android_fetch
+	yes | rm -r tpp_autotool
+	yes | rm -r tpp_fw_src
+	yes | rm -r tpp_lib_slip_src
+	yes | rm -r tpp_lib_src
+	yes | rm -r tpp_software_src
+	yes | rm -r tpp_installedscripts
 	
 	exit 0
 }
@@ -246,10 +248,10 @@ function pushRepo {
 	move tpp_repo/src/lib/stdlib/ tpp_gftree/tpp_lib_src/
 	
 	info "tpp_installedscripts"
-	movemf tpp_repo/scripts/* tpp_gftree/tpp_scripts_to_install/
+	movemf tpp_repo/scripts/* tpp_gftree/tpp_installedscripts/
 	
 	info "tpp_software_src_insert"
-	movemf tpp_gftree/tpp_software_src_insert/* tpp_repo/src/software/
+	movemf tpp_repo/src/software/* tpp_gftree/tpp_software_src/
 	
 	changedir tpp_gftree
 	
